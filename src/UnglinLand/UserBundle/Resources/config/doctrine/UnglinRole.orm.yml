@@ -1,0 +1,19 @@
+UnglinLand\UserModule\Model\UnglinRole:
+    type:                 entity
+    repositoryClass:      UnglinLand\UserBundle\Model\Doctrine\ORM\Repository\UnglinRoleRepository
+    table:                unglin_land_role
+    indexes:
+        label_index:
+            columns:      label
+    id:
+        id:
+            type:         guid
+            generator:
+                strategy: UUID
+    fields:
+        label:
+            type:         string
+            length:       255
+            column:       label
+            nullable:     false
+            unique:       true

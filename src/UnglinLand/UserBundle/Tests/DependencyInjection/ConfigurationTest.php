@@ -65,6 +65,18 @@ class ConfigurationTest extends TestCase
     {
         $tree = $this->instance->getConfigTreeBuilder();
         $this->assertInstanceOf(TreeBuilder::class, $tree);
-        $this->assertEquals('unglin_land_user', $tree->buildTree()->getName());
+
+        $buildedTree = $tree->buildTree();
+        $this->assertEquals('unglin_land_user', $buildedTree->getName());
+
+        $childs = $buildedTree->getChildren();
+        $this->assertArrayHasKey('driver', $buildedTree->getChildren());
+        $this->assertEquals('orm', $childs['driver']->getDefaultValue());
+        $this->assertEquals(['orm', 'odm'], $childs['driver']->getValues());
+
+        $this->assertArrayHasKey('driver_configuration', $buildedTree->getChildren());
+
+        $driverConfiguration = $buildedTree->getChildren()['driver_configuration'];
+        $this->assertArrayHasKey('role_repository', $driverConfiguration->getChildren());
     }
 }

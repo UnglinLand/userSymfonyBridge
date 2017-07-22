@@ -7,44 +7,48 @@
  *
  * PHP version 7.2
  *
- * @category Bundle
+ * @category Test
  * @package  UserSymfonyBridge
  * @author   matthieu vallance <matthieu.vallance@cscfa.fr>
  * @license  MIT <https://opensource.org/licenses/MIT>
  * @link     http://cscfa.fr
  */
-namespace UnglinLand\UserBundle;
+namespace UnglinLand\UserBundle\Tests;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use PHPUnit\Framework\TestCase;
+use UnglinLand\UserBundle\UnglinLandUserBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use UnglinLand\UserBundle\DependencyInjection\Compiler\RoleModelCompilerPass;
 
 /**
- * UnglinLandUserBundle
+ * UnglinLandUserBundle test
  *
- * This bundle is used as symfony bridge for the unglinland_user project
+ * This class is used to validate the UnglinLandUserBundle class
  *
- * @category Bundle
+ * @category Test
  * @package  UserSymfonyBridge
  * @author   matthieu vallance <matthieu.vallance@cscfa.fr>
  * @license  MIT <https://opensource.org/licenses/MIT>
  * @link     http://cscfa.fr
  */
-class UnglinLandUserBundle extends Bundle
+class UnglinLandUserBundleTest extends TestCase
 {
     /**
-     * Builds the bundle.
+     * Test build
      *
-     * It is only ever called once when the cache is empty.
-     *
-     * @param ContainerBuilder $container A ContainerBuilder instance
+     * This method validate the UserSymfonyBridge::build method
      *
      * @return void
      */
-    public function build(ContainerBuilder $container)
+    public function testBuild()
     {
-        parent::build($container);
+        $container = $this->createMock(ContainerBuilder::class);
+        $bundle = new UnglinLandUserBundle();
 
-        $container->addCompilerPass(new RoleModelCompilerPass());
+        $container->expects($this->once())
+            ->method('addCompilerPass')
+            ->with($this->isInstanceOf(RoleModelCompilerPass::class));
+
+        $bundle->build($container);
     }
 }

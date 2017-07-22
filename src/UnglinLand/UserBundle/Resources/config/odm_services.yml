@@ -1,0 +1,17 @@
+services:
+    _defaults:
+        autowire: false
+        autoconfigure: false
+        public: false
+
+    unglin_land.role.document_manager:
+        class: Doctrine\Common\Persistence\ObjectManager
+        factory: ["@doctrine_mongodb", "getManagerForClass"]
+        arguments: 
+            - UnglinLandUserBundle:UnglinRole
+
+    unglin_land.role.doctrine_odm_repository:
+        class: UnglinLand\UserBundle\Model\Doctrine\ODM\Repository\UnglinRoleRepository
+        factory: ["@unglin_land.role.document_manager", "getRepository"]
+        arguments: 
+            - UnglinLandUserBundle:UnglinRole

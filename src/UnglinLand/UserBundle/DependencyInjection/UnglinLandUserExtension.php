@@ -20,6 +20,10 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use UnglinLand\UserBundle\DependencyInjection\Configuration;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
+use UnglinLand\UserBundle\DependencyInjection\ExtensionStrategy\ExtensionStrategyDispatcher;
+use UnglinLand\UserBundle\DependencyInjection\ExtensionStrategy\Driver\DoctrineStrategy;
+use UnglinLand\UserBundle\DependencyInjection\ExtensionStrategy\Driver\DoctrineMongoDBStrategy;
 
 /**
  * UnglinLand user extension
@@ -32,7 +36,7 @@ use UnglinLand\UserBundle\DependencyInjection\Configuration;
  * @license  MIT <https://opensource.org/licenses/MIT>
  * @link     http://cscfa.fr
  */
-class UnglinLandUserExtension extends Extension
+class UnglinLandUserExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * Load
@@ -48,8 +52,39 @@ class UnglinLandUserExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
-        $this->processConfiguration($configuration, $configs);
+        $bundleConfig = $this->processConfiguration($configuration, $configs);
 
-        new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+
+        $loader->load('services.yml');
+        $loader->load($bundleConfig['driver'].'_services.yml');
+    }
+
+    /**
+     * Prepend
+     *
+     * Allow an extension to prepend the extension configurations.
+     *
+     * @param ContainerBuilder $container The application container
+     *
+     * @return void
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        $config = $this->processConfiguration(
+            new Configuration(),
+            $container->getExtensionConfig($this->getAlias())
+        );
+
+        $dispatcher = new ExtensionStrategyDispatcher();
+        $dispatcher->attach(new DoctrineStrategy())
+            ->attach(new DoctrineMongoDBStrategy())
+            ->dispatch(
+                [
+                    'bundles' => $container->getParameter('kernel.bundles'),
+                    'container' => $container,
+                    'config' => $config
+                ]
+            );
     }
 }

@@ -13,8 +13,6 @@
         <exclude name="UnusedPrivateField"/>
     </rule>
     
-    <rule ref="rulesets/naming.xml" />
-    
     <rule ref="rulesets/design.xml">
         <exclude name="CouplingBetweenObjects"/>
     </rule>
@@ -30,4 +28,14 @@
     <rule ref="rulesets/codesize.xml" />
     
     <rule ref="rulesets/cleancode.xml" />
+
+    <rule ref="rulesets/naming.xml">
+        <exclude name="ShortVariable"/>
+    </rule>
+    
+    <rule ref="rulesets/naming.xml/ShortVariable">
+        <properties>
+            <property name="exceptions" value="id" />
+        </properties>
+    </rule>
 </ruleset>

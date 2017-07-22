@@ -1,0 +1,11 @@
+services:
+    _defaults:
+        autowire: false
+        autoconfigure: false
+        public: false
+
+    unglin_land.role.mapper:
+        class: UnglinLand\UserBundle\Model\Doctrine\ORM\Mapper\UnglinRoleMapper
+        arguments:
+            - "@unglin_land.role.default_repository"
+            - "@unglin_land.role.entity_manager"

@@ -1,6 +1,6 @@
 {
 	"require" : {
-		"unglin-land/unglin-land_user" : "0.0.1",
+		"unglin-land/unglin-land_user" : "0.1.0",
 		"symfony/http-kernel" : "^3.0@stable"
 	},
 	"require-dev" : {
@@ -8,7 +8,13 @@
 		"phpmd/phpmd" : "^2.6@stable",
 		"squizlabs/php_codesniffer" : "^3.0@stable",
 		"sebastian/phpcpd" : "^3.0@stable",
-		"phpmetrics/phpmetrics" : "^2.2@stable"
+		"phpmetrics/phpmetrics" : "^2.2@stable",
+		"doctrine/orm" : "^2.5@stable",
+		"doctrine/doctrine-bundle" : "^1.6",
+		"symfony/yaml" : "^3.3",
+		"alcaeus/mongo-php-adapter": "^1.1@stable",
+		"doctrine/mongodb-odm": "^1.1@stable",
+		"doctrine/mongodb-odm-bundle": "^3.3@stable"
 	},
 	"authors" : [{
 			"name" : "matthieu88160",
@@ -37,5 +43,12 @@
 		"psr-4" : {
 			"UnglinLand\\UserBundle\\" : "src/UnglinLand/UserBundle"
 		}
+	},
+	"suggest" : {
+		"doctrine/doctrine-bundle" : "For user mapping over doctrine orm",
+		"doctrine/orm" : "For user mapping over doctrine orm",
+		"alcaeus/mongo-php-adapter": "For user mapping over doctrine odm on php7",
+		"doctrine/mongodb-odm": "For user mapping over doctrine odm",
+		"doctrine/mongodb-odm-bundle": "For user mapping over doctrine odm"
 	}
 }

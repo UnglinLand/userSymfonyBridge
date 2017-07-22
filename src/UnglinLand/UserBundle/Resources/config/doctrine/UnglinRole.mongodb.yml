@@ -1,0 +1,18 @@
+UnglinLand\UserModule\Model\UnglinRole:
+    type:                   document
+    repositoryClass:        UnglinLand\UserBundle\Model\Doctrine\ODM\Repository\UnglinRoleRepository
+    collection:             unglin_land_role
+    fields:
+        id:
+            type:           string
+            id:             true
+            strategy:       UUID
+        label:
+            type:           string
+    indexes:
+        label_index:
+            options:
+                unique:     true
+            keys:
+                label:
+                    order:  asc

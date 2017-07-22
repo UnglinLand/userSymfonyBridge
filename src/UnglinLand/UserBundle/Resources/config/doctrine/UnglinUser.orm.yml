@@ -1,0 +1,40 @@
+UnglinLand\UserModule\Model\UnglinUser:
+    type:                                       entity
+    repositoryClass:                            UnglinLand\UserBundle\Model\Doctrine\ORM\Repository\UnglinUserRepository
+    table:                                      unglin_land_user
+    indexes:
+        username_index:
+            columns:                            username
+    id:
+        id:
+            type:                               guid
+            generator:
+                strategy:                       UUID
+    fields:
+        password:
+            type:                               string
+            length:                             64
+            column:                             password
+            nullable:                           false
+        salt:
+            type:                               string
+            length:                             64
+            column:                             password_salt
+            nullable:                           false
+        username:
+            type:                               string
+            length:                             255
+            column:                             username
+            nullable:                           false
+            unique:                             true
+    manyToMany:
+        roles:
+            targetEntity:                       UnglinRole
+            joinTable:
+                name:                           unglin_land_user_roles
+                joinColumns:
+                    user_id:
+                      referencedColumnName:     id
+                inverseJoinColumns:
+                    group_id:
+                        referencedColumnName:   id

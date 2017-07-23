@@ -1,6 +1,6 @@
 UnglinLand\UserModule\Model\UnglinRole:
     type:                   document
-    repositoryClass:        UnglinLand\UserBundle\Model\Doctrine\ODM\Repository\UnglinRoleRepository
+    repositoryClass:        UnglinLand\UserModule\Model\Doctrine\ODM\Repository\UnglinRoleRepository
     collection:             unglin_land_role
     fields:
         id:

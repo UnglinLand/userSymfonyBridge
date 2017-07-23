@@ -7,7 +7,7 @@ unglin_land_user:
 doctrine:
     dbal:
         driver: pdo_mysql
-        host: localhost #'%database_host%'
+        host: mysql #'%database_host%'
         port: 3306 #'%database_port%'
         dbname: test #'%database_name%'
         user: root #'%database_user%'

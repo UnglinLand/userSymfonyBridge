@@ -4,8 +4,9 @@ services:
         autoconfigure: false
         public: false
 
-    unglin_land.role.mapper:
-        class: UnglinLand\UserBundle\Model\Doctrine\ORM\Mapper\UnglinRoleMapper
+    unglin_land.role.manager:
+        class: UnglinLand\UserModule\Manager\UnglinRoleManager
+        public: true
         arguments:
-            - "@unglin_land.role.default_repository"
-            - "@unglin_land.role.entity_manager"
+            - "@unglin_land.role.mapper"
+            - "@logger"

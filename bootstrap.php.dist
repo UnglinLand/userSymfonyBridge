@@ -1,0 +1,19 @@
+<?php
+use Doctrine\ORM\Tools\Setup;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ODM\MongoDB\Mapping\Driver\SimplifiedYamlDriver;
+
+require_once "vendor/autoload.php";
+
+$isDevMode = true;
+
+$config = Setup::createYAMLMetadataConfiguration(
+    array(__DIR__."/src/UnglinLand/UserBundle/Resources/config/doctrine/"),
+    $isDevMode
+);
+
+// database configuration parameters
+$conn = array();
+
+// obtaining the entity manager
+$entityManager = EntityManager::create($conn, $config);

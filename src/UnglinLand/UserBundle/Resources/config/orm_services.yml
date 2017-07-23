@@ -11,7 +11,13 @@ services:
             - UnglinLandUserBundle:UnglinRole
         
     unglin_land.role.doctrine_orm_repository:
-        class: UnglinLand\UserBundle\Model\Doctrine\ORM\Repository\UnglinRoleRepository
+        class: UnglinLand\UserModule\Model\Doctrine\ORM\Repository\UnglinRoleRepository
         factory: ["@unglin_land.role.entity_manager", "getRepository"]
         arguments: 
             - UnglinLandUserBundle:UnglinRole
+
+    unglin_land.role.mapper:
+        class: UnglinLand\UserModule\Model\Doctrine\Mapper\UnglinRoleMapper
+        arguments:
+            - "@unglin_land.role.entity_manager"
+            - "@unglin_land.role.doctrine_orm_repository"

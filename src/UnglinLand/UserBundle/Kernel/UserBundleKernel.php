@@ -21,6 +21,7 @@ use UnglinLand\UserBundle\UnglinLandUserBundle;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Bundle\MonologBundle\MonologBundle;
 
 /**
  * UserBundleKernel
@@ -93,6 +94,7 @@ class UserBundleKernel extends Kernel
     {
         $bundles = [
             new UnglinLandUserBundle(),
+            new MonologBundle()
         ];
 
         $driver = $this->getDriver();

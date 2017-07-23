@@ -22,6 +22,7 @@ use UnglinLand\UserBundle\UnglinLandUserBundle;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle;
+use Symfony\Bundle\MonologBundle\MonologBundle;
 
 /**
  * UserBundleKernel test
@@ -83,13 +84,15 @@ class UserBundleKernelTest extends TestCase
 
         $expectedBundles = [
             UnglinLandUserBundle::class,
+            MonologBundle::class,
             DoctrineBundle::class
         ];
 
         $bundles = $instance->registerBundles();
-        $this->assertCount(2, $bundles);
+        $this->assertCount(3, $bundles);
         $this->assertInstanceOf($expectedBundles[0], $bundles[0]);
         $this->assertInstanceOf($expectedBundles[1], $bundles[1]);
+        $this->assertInstanceOf($expectedBundles[2], $bundles[2]);
     }
 
     /**
@@ -106,17 +109,19 @@ class UserBundleKernelTest extends TestCase
 
         $expectedBundles = [
             UnglinLandUserBundle::class,
+            MonologBundle::class,
             DoctrineBundle::class,
             FrameworkBundle::class,
             DoctrineMongoDBBundle::class
         ];
 
         $bundles = $instance->registerBundles();
-        $this->assertCount(4, $bundles);
+        $this->assertCount(5, $bundles);
         $this->assertInstanceOf($expectedBundles[0], $bundles[0]);
         $this->assertInstanceOf($expectedBundles[1], $bundles[1]);
         $this->assertInstanceOf($expectedBundles[2], $bundles[2]);
         $this->assertInstanceOf($expectedBundles[3], $bundles[3]);
+        $this->assertInstanceOf($expectedBundles[4], $bundles[4]);
     }
 
     /**
@@ -132,11 +137,13 @@ class UserBundleKernelTest extends TestCase
         $instance->setConfigurationFile('unexisting.file');
 
         $expectedBundles = [
-            UnglinLandUserBundle::class
+            UnglinLandUserBundle::class,
+            MonologBundle::class
         ];
 
         $bundles = $instance->registerBundles();
-        $this->assertCount(1, $bundles);
+        $this->assertCount(2, $bundles);
         $this->assertInstanceOf($expectedBundles[0], $bundles[0]);
+        $this->assertInstanceOf($expectedBundles[1], $bundles[1]);
     }
 }

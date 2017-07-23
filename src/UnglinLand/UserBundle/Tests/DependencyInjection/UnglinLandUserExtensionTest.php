@@ -19,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use UnglinLand\UserBundle\DependencyInjection\UnglinLandUserExtension;
 use UnglinLand\UserBundle\Kernel\UserBundleKernel;
+use UnglinLand\UserModule\Manager\UnglinRoleManager;
 
 /**
  * UnglinLandUserExtension test
@@ -67,11 +68,11 @@ class UnglinLandUserExtensionTest extends TestCase
         $container = $this->createMock(ContainerBuilder::class);
         $configs = ['unglin_land_user' => ['driver' => 'orm']];
 
-        $container->expects($this->exactly(3))
+        $container->expects($this->exactly(4))
             ->method('setDefinition')
             ->withConsecutive(
                 [
-                    $this->equalTo('unglin_land.role.mapper'),
+                    $this->equalTo('unglin_land.role.manager'),
                     $this->anything()
                 ],
                 [
@@ -80,6 +81,10 @@ class UnglinLandUserExtensionTest extends TestCase
                 ],
                 [
                     $this->equalTo('unglin_land.role.doctrine_orm_repository'),
+                    $this->anything()
+                ],
+                [
+                    $this->equalTo('unglin_land.role.mapper'),
                     $this->anything()
                 ]
             );
@@ -99,11 +104,11 @@ class UnglinLandUserExtensionTest extends TestCase
         $container = $this->createMock(ContainerBuilder::class);
         $configs = ['unglin_land_user' => ['driver' => 'odm']];
 
-        $container->expects($this->exactly(3))
+        $container->expects($this->exactly(4))
             ->method('setDefinition')
             ->withConsecutive(
                 [
-                    $this->equalTo('unglin_land.role.mapper'),
+                    $this->equalTo('unglin_land.role.manager'),
                     $this->anything()
                 ],
                 [
@@ -112,6 +117,10 @@ class UnglinLandUserExtensionTest extends TestCase
                 ],
                 [
                     $this->equalTo('unglin_land.role.doctrine_odm_repository'),
+                    $this->anything()
+                ],
+                [
+                    $this->equalTo('unglin_land.role.mapper'),
                     $this->anything()
                 ]
             );
@@ -152,6 +161,11 @@ class UnglinLandUserExtensionTest extends TestCase
         $kernel->setConfigurationFile(__DIR__.'/../KernelConfig/config_orm.yml');
         $kernel->boot();
         $container = $kernel->getContainer();
+
+        $this->assertInstanceOf(
+            UnglinRoleManager::class,
+            $container->get('unglin_land.role.manager')
+        );
     }
 
     /**
@@ -187,5 +201,12 @@ class UnglinLandUserExtensionTest extends TestCase
         $kernel->setConfigurationFile(__DIR__.'/../KernelConfig/config_odm.yml');
         $kernel->boot();
         $container = $kernel->getContainer();
+
+        $container->get('unglin_land.role.manager');
+
+        $this->assertInstanceOf(
+            UnglinRoleManager::class,
+            $container->get('unglin_land.role.manager')
+        );
     }
 }

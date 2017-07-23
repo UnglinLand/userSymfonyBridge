@@ -20,6 +20,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use UnglinLand\UserBundle\DependencyInjection\UnglinLandUserExtension;
 use UnglinLand\UserBundle\Kernel\UserBundleKernel;
 use UnglinLand\UserModule\Manager\UnglinRoleManager;
+use UnglinLand\UserBundle\Tests\Kernel\OrmTestKernel;
+use UnglinLand\UserBundle\Tests\Kernel\OdmTestKernel;
 
 /**
  * UnglinLandUserExtension test
@@ -157,8 +159,7 @@ class UnglinLandUserExtensionTest extends TestCase
 
         $this->instance->prepend($container);
 
-        $kernel = new UserBundleKernel('test_orm', true);
-        $kernel->setConfigurationFile(__DIR__.'/../KernelConfig/config_orm.yml');
+        $kernel = new OrmTestKernel('test_orm', true);
         $kernel->boot();
         $container = $kernel->getContainer();
 
@@ -197,8 +198,7 @@ class UnglinLandUserExtensionTest extends TestCase
 
         $this->instance->prepend($container);
 
-        $kernel = new UserBundleKernel('test_odm', true);
-        $kernel->setConfigurationFile(__DIR__.'/../KernelConfig/config_odm.yml');
+        $kernel = new OdmTestKernel('test_odm', true);
         $kernel->boot();
         $container = $kernel->getContainer();
 

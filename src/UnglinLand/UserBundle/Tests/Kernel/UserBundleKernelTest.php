@@ -23,6 +23,7 @@ use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle;
 use Symfony\Bundle\MonologBundle\MonologBundle;
+use UnglinLand\UserBundle\Kernel\AbstractKernel;
 
 /**
  * UserBundleKernel test
@@ -46,28 +47,26 @@ class UserBundleKernelTest extends TestCase
      */
     public function testConfiguration()
     {
-        $configFile = __DIR__.'/../KernelConfig/config_orm.yml';
-
-        $instance = new UserBundleKernel('test', true);
-
-        $classReflex = new \ReflectionClass(UserBundleKernel::class);
-        $rootDir = dirname($classReflex->getFileName());
-        $baseConfigFile = $rootDir.'/config/config_test.yml';
-        $this->assertEquals($baseConfigFile, $instance->getConfigurationFile());
-
-        $instance->setConfigurationFile($configFile);
-
-        $this->assertNull($instance->boot());
-
-        $this->assertEquals(sys_get_temp_dir().DIRECTORY_SEPARATOR.'UserBundleKernel', $instance->getLogDir());
-        $this->assertEquals(sys_get_temp_dir().DIRECTORY_SEPARATOR.'UserBundleKernel', $instance->getCacheDir());
-        $this->assertEquals($configFile, $instance->getConfigurationFile());
-
         $loader = $this->createMock(LoaderInterface::class);
         $loader->expects($this->once())
             ->method('load')
-            ->with($configFile);
-        $instance->registerContainerConfiguration($loader);
+            ->with($this->equalTo(__DIR__.'/../KernelConfig/config_orm.yml'));
+
+        $kernel = $this->getMockForAbstractClass(
+            AbstractKernel::class,
+            ['test', true],
+            '',
+            true,
+            true,
+            true,
+            ['getConfigurationFile']
+        );
+
+        $kernel->expects($this->once())
+            ->method('getConfigurationFile')
+            ->willReturn(__DIR__.'/../KernelConfig/config_orm.yml');
+
+        $kernel->registerContainerConfiguration($loader);
     }
 
     /**
@@ -79,8 +78,7 @@ class UserBundleKernelTest extends TestCase
      */
     public function testOrmBundleRegistered()
     {
-        $instance = new UserBundleKernel('test', true);
-        $instance->setConfigurationFile(__DIR__.'/../KernelConfig/config_orm.yml');
+        $instance = new OrmTestKernel('test', true);
 
         $expectedBundles = [
             UnglinLandUserBundle::class,
@@ -104,8 +102,7 @@ class UserBundleKernelTest extends TestCase
      */
     public function testOdmBundleRegistered()
     {
-        $instance = new UserBundleKernel('test', true);
-        $instance->setConfigurationFile(__DIR__.'/../KernelConfig/config_odm.yml');
+        $instance = new OdmTestKernel('test', true);
 
         $expectedBundles = [
             UnglinLandUserBundle::class,
@@ -131,17 +128,28 @@ class UserBundleKernelTest extends TestCase
      *
      * @return void
      */
-    public function testNoDriverBundleRegistered()
+    public function testNoDriverBundle()
     {
-        $instance = new UserBundleKernel('test', true);
-        $instance->setConfigurationFile('unexisting.file');
+        $kernel = $this->getMockForAbstractClass(
+            AbstractKernel::class,
+            ['test', true],
+            '',
+            true,
+            true,
+            true,
+            ['getConfigurationFile']
+        );
+
+        $kernel->expects($this->once())
+            ->method('getConfigurationFile')
+            ->willReturn('unexistingFile');
 
         $expectedBundles = [
             UnglinLandUserBundle::class,
             MonologBundle::class
         ];
 
-        $bundles = $instance->registerBundles();
+        $bundles = $kernel->registerBundles();
         $this->assertCount(2, $bundles);
         $this->assertInstanceOf($expectedBundles[0], $bundles[0]);
         $this->assertInstanceOf($expectedBundles[1], $bundles[1]);

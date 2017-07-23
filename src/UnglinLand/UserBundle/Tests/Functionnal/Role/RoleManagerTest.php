@@ -18,6 +18,8 @@ namespace UnglinLand\UserBundle\Tests\Functionnal\Role;
 use PHPUnit\Framework\TestCase;
 use UnglinLand\UserModule\Manager\UnglinRoleManager;
 use UnglinLand\UserBundle\Kernel\UserBundleKernel;
+use UnglinLand\UserBundle\Tests\Kernel\OdmTestKernel;
+use UnglinLand\UserBundle\Tests\Kernel\OrmTestKernel;
 
 /**
  * Role manager test
@@ -41,8 +43,7 @@ class RoleManagerTest extends TestCase
      */
     protected function getOdmKernel()
     {
-        $kernel = new UserBundleKernel('test_odm', true);
-        $kernel->setConfigurationFile(__DIR__.'/../KernelConfig/config_odm.yml');
+        $kernel = new OdmTestKernel('test_odm', true);
         $kernel->boot();
 
         return $kernel;
@@ -57,8 +58,7 @@ class RoleManagerTest extends TestCase
      */
     protected function getOrmKernel()
     {
-        $kernel = new UserBundleKernel('test_orm', true);
-        $kernel->setConfigurationFile(__DIR__.'/../KernelConfig/config_orm.yml');
+        $kernel = new OrmTestKernel('test_orm', true);
         $kernel->boot();
 
         return $kernel;
